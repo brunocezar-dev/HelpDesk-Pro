@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="HelpDesk Pro - gerenciamento de chamados de suporte técnico.">
+  <title>HelpDesk Pro | Central de Suporte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="#"><span class="brand-mark">H</span><span>HelpDesk<span class="brand-accent">Pro</span></span></a>
+  <p class="nav-label">WORKSPACE</p>
+  <a class="nav-link active" href="#overview"><span>▦</span> Visão geral</a>
+  <a class="nav-link" href="#tickets"><span>▤</span> Chamados</a>
+  <a class="nav-link" href="#team"><span>♙</span> Equipe</a>
+  <a class="nav-link" href="#reports"><span>▥</span> Relatórios</a>
+  <div class="sidebar-note"><img src="assets/photo.png" alt=""><strong>Suporte organizado.</strong><small>Atenda melhor. Resolva mais rápido.</small></div>
+  <div class="user-profile"><div class="avatar">AD</div><div><b>Administrador</b><small>Área de demonstração</small></div></div>
+</aside>
+<main class="main" id="overview">
+  <header class="topbar"><div><p class="eyebrow">CENTRAL DE ATENDIMENTO</p><h1>Visão geral</h1><p class="subheading">Acompanhe os chamados e a produtividade da equipe.</p></div><button class="primary-btn" id="newTicketBtn">＋ Abrir chamado</button></header>
+  <section class="welcome"><div><span class="welcome-label">HELPDESK PRO</span><h2>Olá! Como está o suporte hoje?</h2><p>Todos os atendimentos em um só lugar, do início à resolução.</p></div><img src="assets/photo.png" alt="Ilustração de suporte técnico"></section>
+  <section class="stats">
+    <article class="stat"><div class="stat-head">Total de chamados <span class="stat-icon purple">▤</span></div><strong id="totalCount">0</strong><small>Chamados cadastrados</small></article>
+    <article class="stat"><div class="stat-head">Abertos <span class="stat-icon blue">◷</span></div><strong id="openCount">0</strong><small>Precisam de atendimento</small></article>
+    <article class="stat"><div class="stat-head">Em andamento <span class="stat-icon orange">↻</span></div><strong id="progressCount">0</strong><small>Em atendimento técnico</small></article>
+    <article class="stat"><div class="stat-head">Resolvidos <span class="stat-icon green">✓</span></div><strong id="resolvedCount">0</strong><small>Atendimentos concluídos</small></article>
+  </section>
+  <section class="grid-panels">
+    <article class="panel" id="reports"><div class="panel-title"><div><h3>Chamados por status</h3><p>Visão geral da fila de atendimento</p></div></div><div class="chart-box"><canvas id="statusChart"></canvas></div></article>
+    <article class="panel"><div class="panel-title"><div><h3>Prioridades</h3><p>Distribuição dos chamados ativos</p></div></div><div class="priority-summary" id="prioritySummary"></div></article>
+  </section>
+  <section class="panel ticket-panel" id="tickets">
+    <div class="panel-title ticket-title"><div><h3>Chamados recentes</h3><p>Gerencie e atualize os atendimentos</p></div><div class="filters"><input id="searchInput" placeholder="Buscar chamado..." aria-label="Buscar chamado"><select id="statusFilter" aria-label="Filtrar por status"><option value="ALL">Todos os status</option><option value="OPEN">Aberto</option><option value="IN_PROGRESS">Em andamento</option><option value="RESOLVED">Resolvido</option><option value="CLOSED">Fechado</option></select></div></div>
+    <div class="table-scroll"><table><thead><tr><th>CHAMADO</th><th>SOLICITANTE</th><th>RESPONSÁVEL</th><th>PRIORIDADE</th><th>STATUS</th><th>ABERTO EM</th><th>AÇÃO</th></tr></thead><tbody id="ticketTable"></tbody></table></div>
+  </section>
+  <section class="panel team-panel" id="team"><div class="panel-title"><div><h3>Equipe de suporte</h3><p>Funcionários e técnicos cadastrados</p></div><button class="outline-btn" id="newEmployeeBtn">＋ Cadastrar funcionário</button></div><div class="team-list" id="employeeList"></div></section>
+  <footer>HelpDesk Pro <span>•</span> Projeto de portfólio — Java, Spring Boot, MySQL e JavaScript</footer>
+</main>
+
+<div class="backdrop" id="ticketModal"><form class="modal" id="ticketForm"><button type="button" class="close" data-close="ticketModal">×</button><p class="eyebrow">NOVO ATENDIMENTO</p><h2>Abrir chamado</h2>
+<label>Título do chamado<input name="title" required maxlength="120" placeholder="Ex.: Computador não liga"></label>
+<label>Descrição<textarea name="description" required rows="3" placeholder="Descreva o problema..."></textarea></label>
+<div class="form-row"><label>Solicitante<select name="requesterId" id="requesterSelect"></select></label><label>Técnico responsável<select name="technicianId" id="technicianSelect"></select></label></div>
+<div class="form-row"><label>Prioridade<select name="priority"><option value="LOW">Baixa</option><option value="MEDIUM" selected>Média</option><option value="HIGH">Alta</option><option value="URGENT">Urgente</option></select></label><label>Status<select name="status"><option value="OPEN">Aberto</option><option value="IN_PROGRESS">Em andamento</option><option value="RESOLVED">Resolvido</option></select></label></div>
+<button class="primary-btn full" type="submit">Criar chamado</button><p class="message" id="ticketMessage"></p></form></div>
+
+<div class="backdrop" id="employeeModal"><form class="modal" id="employeeForm"><button type="button" class="close" data-close="employeeModal">×</button><p class="eyebrow">CADASTRO DE EQUIPE</p><h2>Novo funcionário</h2>
+<label>Nome completo<input name="name" required placeholder="Nome do funcionário"></label><label>E-mail<input name="email" type="email" required placeholder="nome@empresa.com"></label><label>Função<select name="role"><option value="EMPLOYEE">Funcionário</option><option value="TECHNICIAN">Técnico de suporte</option><option value="ADMIN">Administrador</option></select></label>
+<button class="primary-btn full" type="submit">Cadastrar funcionário</button><p class="message" id="employeeMessage"></p></form></div>
+<script src="app.js"></script>
+</body></html>
